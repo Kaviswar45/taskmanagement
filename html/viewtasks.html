@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Tasks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #4154f1;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #4154f1;
+        }
+        #filters {
+            margin-bottom: 20px;
+        }
+        .filters select {
+            padding: 8px;
+            margin-right: 10px;
+        }
+        #task-list {
+            width: 100%;
+        }
+        .task-item {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .task-item h3 {
+            margin-top: 0;
+        }
+        .task-item button {
+            background-color: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+        .task-item button:hover {
+            background-color: #e53935;
+        }
+        .task-item button:active {
+            background-color: #c62828;
+        }
+    </style>
+</head>
+<body>
+    <h1>View Tasks</h1>
+
+    <div id="filters">
+        <label for="categoryFilter">Filter by Category:</label>
+        <select id="categoryFilter" onchange="filterTasks()">
+            <option value="all">All</option>
+            <option value="Work">Work</option>
+            <option value="Personal">Personal</option>
+            <option value="Study">Study</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label for="priorityFilter">Filter by Priority:</label>
+        <select id="priorityFilter" onchange="filterTasks()">
+            <option value="all">All</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+        </select>
+    </div>
+
+    <div id="task-list">
+        <!-- Tasks will be dynamically populated here -->
+    </div>
+
+    <script>
+        const username = localStorage.getItem('username');
+
+        async function loadTasks() {
+            try {
+                const response = await fetch(`http://localhost:3000/api/tasks?username=${username}`);
+                const tasks = await response.json();
+                renderTasks(tasks);
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+            }
+        }
+
+        async function deleteTask(taskId) {
+            try {
+                const response = await fetch(`http://localhost:3000/api/delete-task/${taskId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    console.log('Task deleted successfully');
+                    loadTasks(); // Reload tasks after deletion
+                } else {
+                    console.error('Failed to delete task');
+                }
+            } catch (error) {
+                console.error('Error deleting task:', error);
+            }
+        }
+
+        async function filterTasks() {
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const priorityFilter = document.getElementById('priorityFilter').value;
+
+            try {
+                let apiUrl = `http://localhost:3000/api/tasks?username=${username}`;
+
+                if (categoryFilter !== 'all') {
+                    apiUrl += `&category=${categoryFilter}`;
+                }
+
+                if (priorityFilter !== 'all') {
+                    apiUrl += `&priority=${priorityFilter}`;
+                }
+
+                const response = await fetch(apiUrl);
+                const filteredTasks = await response.json();
+                renderTasks(filteredTasks);
+            } catch (error) {
+                console.error('Error filtering tasks:', error);
+            }
+        }
+
+        function renderTasks(tasks) {
+            const taskListElement = document.getElementById('task-list');
+            taskListElement.innerHTML = ''; // Clear previous tasks
+
+            tasks.forEach(task => {
+                const taskItem = document.createElement('div');
+                taskItem.classList.add('task-item');
+
+                const titleElement = document.createElement('h3');
+                titleElement.textContent = task.title;
+                taskItem.appendChild(titleElement);
+
+                const descriptionElement = document.createElement('p');
+                descriptionElement.textContent = task.description;
+                taskItem.appendChild(descriptionElement);
+
+                const dueDateElement = document.createElement('p');
+                dueDateElement.textContent = 'Due Date: ' + task.due_date;
+                taskItem.appendChild(dueDateElement);
+
+                const categoryElement = document.createElement('p');
+                categoryElement.textContent = 'Category: ' + task.category;
+                taskItem.appendChild(categoryElement);
+
+                const priorityElement = document.createElement('p');
+                priorityElement.textContent = 'Priority: ' + task.priority;
+                taskItem.appendChild(priorityElement);
+
+                const recurrenceElement = document.createElement('p');
+                recurrenceElement.textContent = 'Recurrence: ' + task.recurrence;
+                taskItem.appendChild(recurrenceElement);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => deleteTask(task.task_id);
+                taskItem.appendChild(deleteButton);
+
+                taskListElement.appendChild(taskItem);
+            });
+        }
+
+        // Initial load of tasks when the page loads
+        loadTasks();
+    </script>
+</body>
+</html>

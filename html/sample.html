@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot using GenAI</title>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div id="chat-container" style="height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;"></div>
+    <form id="chat-form">
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button type="submit">Send</button>
+    </form>
+
+    <script>
+        async function sendMessage(message) {
+            const apiKey = 'AIzaSyBbPlzAgUZu71K5cE2LXUcAZEIRJPQqy6c'; // Replace with your GenAI API key
+            const url = 'https://api.generativeai.io/models/gemini-1.5-flash/generate';
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({ prompt: message, max_tokens: 50 }) // Adjust max_tokens as needed
+                });
+
+                const data = await response.json();
+                return data.choices[0].text.trim();
+            } catch (error) {
+                console.error('Error:', error);
+                return 'Sorry, an error occurred while processing your request.';
+            }
+        }
+
+        document.getElementById('chat-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const userInput = document.getElementById('user-input').value.trim();
+            if (!userInput) return;
+
+            const chatContainer = document.getElementById('chat-container');
+            const userMessageElement = document.createElement('div');
+            userMessageElement.classList.add('user-message');
+            userMessageElement.textContent = `You: ${userInput}`;
+            chatContainer.appendChild(userMessageElement);
+
+            const botMessage = await sendMessage(userInput);
+            const botMessageElement = document.createElement('div');
+            botMessageElement.classList.add('bot-message');
+            botMessageElement.textContent = `Bot: ${botMessage}`;
+            chatContainer.appendChild(botMessageElement);
+
+            // Scroll to bottom of chat container
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Clear input field
+            document.getElementById('user-input').value = '';
+        });
+    </script>
+</body>
+</html>
