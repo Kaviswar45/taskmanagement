@@ -5,7 +5,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch('http://localhost:3000/login', {
+        const response = await fetch('http://localhost:3000/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -14,20 +14,16 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         });
 
         const result = await response.json();
+        console.log(result)
         if (response.ok) {
-            alert('Login successful!');
-            localStorage.setItem('username', result.username); // Store the username in localStorage
-
-            // Check if the user has completed their profile
-            const profileResponse = await fetch(`http://localhost:3000/profile/${result.username}`);
-            const profileResult = await profileResponse.json();
-            if (profileResponse.ok && profileResult.profileComplete) {
-                window.location.href = '../home/index.html'; // Redirect to home page if profile is complete
-            } else {
-                window.location.href = '../html/completeProfile.html'; // Redirect to profile completion page
+            localStorage.setItem('token', result.token);
+            //window.location.href='../home/index.html';
+            if (result.profileExists==1){
+                window.location.href='../home/index.html';
             }
-        } else {
-            alert('Login failed: ' + result.message);
+            else{
+                window.location.href='./completeProfile.html'
+            }
         }
     } catch (error) {
         console.error('Error:', error);

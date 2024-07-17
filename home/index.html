@@ -363,17 +363,48 @@
   <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
 <script>
-  window.onload = function() {
-    const username = localStorage.getItem('username');
-    if (!username) {
-      window.location.href = '../html/login.html';
-    } else {
-      const usernameDisplay = document.getElementById('username-display');
-      if (usernameDisplay) {
-        usernameDisplay.textContent = `Hi, ${username}`;
-      }
+ let token;
+let username;
+
+async function decodeToken() {
+    try {
+        token = localStorage.getItem('token');
+        console.log(token);
+
+        if (!token) {
+            window.location.href = '../html/login.html'
+            return;
+        }
+
+        const response = await fetch('http://localhost:3000/api/decodeToken', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ token: token })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            username = data.username;
+        } else {
+            console.error('Failed to decode token:', response.statusText);
+            if (response.status === 401) { // 401 Unauthorized
+                window.location.href = '../html/login.html';
+            }
+        }
+    } catch (error) {
+        console.error('Error in decodeToken:', error.message);
+        window.location.href = '../html/login.html';
     }
-  };
+}
+
+window.onload = function() {
+    decodeToken();
+};
+
 </script>
 <script>
   function logout() {
@@ -384,6 +415,3 @@
 </body>
 </html>
 
-</body>
-
-</html>

@@ -3,153 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Details</title>
+    <title>User Profile</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: white;
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding-top: 70px; /* Ensure content doesn't hide under fixed header */
+            background: url('https://www.transparenttextures.com/patterns/asfalt-light.png'), linear-gradient(to bottom right, #4154f1, #c8c8c8);
+            background-attachment: fixed;
+            background-size: cover;
             color: #4154f1;
-            font-family: Arial, sans-serif;
+            line-height: 1.6;
         }
         .container {
-            width: 50%;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #4154f1;
-            border-radius: 10px;
+            max-width: 700px;
+            margin-top: 30px;
         }
-        .container h2 {
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #4154f1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            padding: 20px;
             text-align: center;
         }
-        .form-group {
-            margin-bottom: 15px;
+        .card h2, .card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
         }
-        .form-group label {
+        .card p {
+            font-size: 1rem;
+            margin: 5px 0;
+        }
+        .task-status {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .task-status div {
+            background-color: #f1f1f1;
+            color: #4154f1;
+            padding: 15px;
+            border-radius: 10px;
+            flex: 1;
+            margin: 0 10px;
+            text-align: center;
+        }
+        .task-status div p {
+            margin: 0;
+            font-weight: bold;
+        }
+        .header {
+            background-color: #ffffff;
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 997;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header .container-fluid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            margin-right: auto;
+        }
+        .logo img {
+            max-height: 50px;
+            margin-right: 10px;
+        }
+        .sitename {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #012970;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .sitename:hover {
+            text-decoration: none;
+        }
+        .navmenu {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+        .navmenu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        .navmenu ul li {
+            margin: 0 10px;
+        }
+        .navmenu ul li a {
+            color: #012970;
+            text-decoration: none;
+            padding: 10px 15px;
             display: block;
-            margin-bottom: 5px;
+            transition: 0.3s;
+            font-weight: bold;
         }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #4154f1;
+        .navmenu ul li a:hover,
+        .navmenu ul li a.active {
+            color: #4154f1;
+            text-decoration: none;
+            background-color: #f1f1f1;
             border-radius: 5px;
         }
-        .form-group input[readonly] {
-            background-color: #f0f0f0;
-        }
-        .form-group button {
-            width: 100%;
-            padding: 10px;
+        .btn-getstarted {
             background-color: #4154f1;
-            color: white;
+            color: #fff;
             border: none;
-            border-radius: 5px;
+            padding: 10px 20px;
             cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 2px 2px 5px black;
+            font-weight: bold;
         }
-        .form-group button:hover {
-            background-color: #2e3ea1;
+        .btn-getstarted:hover {
+            background-color: #012970;
+            box-shadow: 4px 4px 10px black;
+        }
+        .profile-card {
+            background: linear-gradient(145deg, #f0f0f3, #c8c8c8);
+        }
+        .tasks-card {
+            background: linear-gradient(145deg, #c8c8c8, #f0f0f3);
         }
     </style>
 </head>
 <body>
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container-fluid container-xl d-flex align-items-center">
+            <div class="logo d-flex align-items-center me-auto">
+                <img src="../home/assets/img/logo.png" alt="">
+                <h1 class="sitename">AgendaAce</h1>
+            </div>
+            <nav id="navmenu" class="navmenu ml-auto">
+                <ul>
+                    <li><a href="../home/index.html" class="active">Home</a></li>
+                    <li><a href="../home/index.html#about">About</a></li>
+                    <li><a href="../html/updateprofile.html">Profile</a></li>
+                    <li><a href="../html/tasks.html">Create tasks</a></li>
+                    <li><a href="../html/viewtasks.html">Tasks</a></li>
+                </ul>
+            </nav>
+            <button class="btn-getstarted" onclick="logout()">Logout</button>
+        </div>
+    </header>
+
     <div class="container">
-        <h2>User Details</h2>
-        <form id="userDetailsForm">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" readonly>
+        <div class="card profile-card">
+            <h2 id="name"></h2>
+            <p id="bio"></p>
+            <p id="dob"></p>
+        </div>
+        <div class="card tasks-card">
+            <h3>Tasks Overview</h3>
+            <div class="task-status">
+                <div>
+                    <p>Pending</p>
+                    <p id="pending-count">0</p>
+                </div>
+                <div>
+                    <p>In Progress</p>
+                    <p id="in-progress-count">0</p>
+                </div>
+                <div>
+                    <p>Completed</p>
+                    <p id="completed-count">0</p>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email">
-            </div>
-            <div class="form-group">
-                <label for="first_name">First Name</label>
-                <input type="text" id="first_name" name="first_name">
-            </div>
-            <div class="form-group">
-                <label for="last_name">Last Name</label>
-                <input type="text" id="last_name" name="last_name">
-            </div>
-            <div class="form-group">
-                <label for="date_of_birth">Date of Birth</label>
-                <input type="date" id="date_of_birth" name="date_of_birth">
-            </div>
-            <div class="form-group">
-                <button type="button" onclick="enableEdit()">Edit Details</button>
-                <button type="button" onclick="updateDetails()" style="display: none;">Update Details</button>
-            </div>
-        </form>
+        </div>
     </div>
 
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        // Fetch username from local storage
-        const username = localStorage.getItem('username');
+        let token;
+        let username;
 
-        // Fetch user details from API and populate the form
-        async function fetchUserDetails() {
+        async function decodeToken() {
             try {
-                const response = await fetch(`http://localhost:3000/api/user-details?username=${username}`);
-                const userDetails = await response.json();
-                document.getElementById('username').value = userDetails.username;
-                document.getElementById('email').value = userDetails.email;
-                document.getElementById('first_name').value = userDetails.first_name;
-                document.getElementById('last_name').value = userDetails.last_name;
-                document.getElementById('date_of_birth').value = userDetails.date_of_birth ? userDetails.date_of_birth.slice(0, 10) : ''; // Format date if available
-            } catch (error) {
-                console.error('Error fetching user details:', error);
-            }
-        }
-
-        // Update user details via API
-        async function updateDetails() {
-            try {
-                const userDetails = {
-                    username: document.getElementById('username').value,
-                    email: document.getElementById('email').value,
-                    first_name: document.getElementById('first_name').value,
-                    last_name: document.getElementById('last_name').value,
-                    date_of_birth: document.getElementById('date_of_birth').value
-                };
-
-                const response = await fetch('http://localhost:3000/api/update-user-details', {
-                    method: 'PUT',
+                token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = './login.html';
+                }
+                const response = await fetch('http://localhost:3000/api/decodeToken', {
+                    method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify(userDetails)
+                    body: JSON.stringify({ token: token })
                 });
-
                 if (response.ok) {
-                    alert('User details updated successfully!');
-                    document.getElementById('email').readOnly = true;
-                    document.getElementById('first_name').readOnly = true;
-                    document.getElementById('last_name').readOnly = true;
-                    document.getElementById('date_of_birth').readOnly = true;
-                    document.querySelector('button[type="button"][onclick="enableEdit()"]').style.display = 'block';
-                    document.querySelector('button[type="button"][onclick="updateDetails()"]').style.display = 'none';
+                    const data = await response.json();
+                    username = data.username;
+                    fetchUserProfile();
                 } else {
-                    throw new Error('Failed to update user details');
+                    console.error('Failed to decode token:', response.statusText);
+                    window.location.href = './login.html';
                 }
             } catch (error) {
-                console.error('Error updating user details:', error);
-                alert('Failed to update user details');
+                console.error('Error in decodeToken:', error.message);
+                window.location.href = './login.html';
             }
         }
 
-        // Enable editing of user details fields
-        function enableEdit() {
-            document.getElementById('email').readOnly = false;
-            document.getElementById('first_name').readOnly = false;
-            document.getElementById('last_name').readOnly = false;
-            document.getElementById('date_of_birth').readOnly = false;
-
-            // Hide "Edit Details" button and show "Update Details" button
-            document.querySelector('button[type="button"][onclick="enableEdit()"]').style.display = 'none';
-            document.querySelector('button[type="button"][onclick="updateDetails()"]').style.display = 'block';
+        async function fetchUserProfile() {
+            try {
+                const response = await fetch('http://localhost:3000/api/userProfile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ username: username })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('name').textContent = `${data.first_name} ${data.last_name}`;
+                    document.getElementById('bio').textContent = data.bio;
+                    document.getElementById('dob').textContent = `Date of Birth: ${new Date(data.dob).toLocaleDateString()}`;
+                    document.getElementById('pending-count').textContent = data.tasks.pending;
+                    document.getElementById('in-progress-count').textContent = data.tasks.in_progress;
+                    document.getElementById('completed-count').textContent = data.tasks.completed;
+                } else {
+                    console.error('Failed to fetch user profile:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching user profile:', error.message);
+            }
         }
 
-        // Fetch user details on page load
-        fetchUserDetails();
+        window.onload = function() {
+            decodeToken();
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = './login.html';
+        }
     </script>
 </body>
 </html>

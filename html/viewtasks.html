@@ -3,178 +3,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Tasks</title>
+    <title>Tasks</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            color: #4154f1;
+            font-family: 'Roboto', Arial, sans-serif;
             margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
+            padding-top: 50px;
+            background: url('https://www.transparenttextures.com/patterns/asfalt-light.png'), linear-gradient(to bottom right, #4154f1, #c8c8c8);
+            background-attachment: fixed;
+            background-size: cover;
             color: #4154f1;
+            line-height: 1.6;
         }
-        #filters {
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #4154f1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px; /* Spacing between cards */
+        }
+        .card h2 {
+            font-size: 1.8rem;
             margin-bottom: 20px;
         }
-        .filters select {
-            padding: 8px;
+        .card form {
+            text-align: left;
+        }
+        .card .form-group {
+            margin-bottom: 15px; /* Space between form elements */
+        }
+        .card .btn {
+            margin-top: 10px; /* Space above buttons */
+        }
+        .header {
+            background-color: #ffffff;
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 997;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header .container-fluid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            margin-right: auto;
+        }
+        .logo img {
+            max-height: 50px;
             margin-right: 10px;
         }
-        #task-list {
-            width: 100%;
+        .sitename {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #012970;
+            text-decoration: none;
+            font-weight: bold;
         }
-        .task-item {
-            background-color: #ffffff;
-            border: 1px solid #ddd;
+        .sitename:hover {
+            text-decoration: none;
+        }
+        .navmenu {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+        .navmenu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        .navmenu ul li {
+            margin: 0 10px;
+        }
+        .navmenu ul li a {
+            color: #012970;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            transition: background-color 0.3s, color 0.3s;
+            font-weight: bold;
+        }
+        .navmenu ul li a:hover {
+            color: #4154f1;
+            background-color: #f1f1f1;
             border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
         }
-        .task-item h3 {
-            margin-top: 0;
+        .navmenu ul li a.active {
+            color: #4154f1;
+            background-color: #f1f1f1;
+            border-radius: 5px;
         }
-        .task-item button {
-            background-color: #f44336;
-            color: white;
-            padding: 5px 10px;
+        .btn-getstarted {
+            background-color: #4154f1;
+            color: #ffffff;
             border: none;
-            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 1rem;
             cursor: pointer;
-            float: right;
+            transition: background-color 0.3s ease;
         }
-        .task-item button:hover {
-            background-color: #e53935;
-        }
-        .task-item button:active {
-            background-color: #c62828;
+        .btn-getstarted:hover {
+            background-color: #3341c1;
         }
     </style>
 </head>
 <body>
-    <h1>View Tasks</h1>
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container-fluid container-xl d-flex align-items-center">
+            <div class="logo d-flex align-items-center me-auto">
+                <img src="../home/assets/img/logo.png" alt="">
+                <h1 class="sitename">AgendaAce</h1>
+            </div>
+            <nav id="navmenu" class="navmenu ml-auto">
+                <ul>
+                    <li><a href="../home/index.html">Home</a></li>
+                    <li><a href="../home/index.html#about">About</a></li>
+                    <li><a href="../html/updateprofile.html">Profile</a></li>
+                    <li><a href="../html/tasks.html" class="active">Create tasks</a></li>
+                    <li><a href="../html/viewtasks.html">Tasks</a></li>
+                </ul>
+            </nav>
+            <button class="btn-getstarted" onclick="logout()">Logout</button>
+        </div>
+    </header>
 
-    <div id="filters">
-        <label for="categoryFilter">Filter by Category:</label>
-        <select id="categoryFilter" onchange="filterTasks()">
-            <option value="all">All</option>
-            <option value="Work">Work</option>
-            <option value="Personal">Personal</option>
-            <option value="Study">Study</option>
-            <option value="Other">Other</option>
-        </select>
-
-        <label for="priorityFilter">Filter by Priority:</label>
-        <select id="priorityFilter" onchange="filterTasks()">
-            <option value="all">All</option>
-            <option value="High">High</option>
-            <option value="Medium">Medium</option>
-            <option value="Low">Low</option>
-        </select>
+    <div class="container">
+        <div class="card">
+            <h2>Tasks</h2>
+            <div id="taskList">
+                <!-- Task items will be dynamically populated here -->
+            </div>
+        </div>
     </div>
 
-    <div id="task-list">
-        <!-- Tasks will be dynamically populated here -->
-    </div>
-
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        const username = localStorage.getItem('username');
+        let token;
+        let username;
 
-        async function loadTasks() {
+        function setActiveNav() {
+            const currentPage = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('.navmenu ul li a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        async function decodeToken() {
             try {
-                const response = await fetch(`http://localhost:3000/api/tasks?username=${username}`);
-                const tasks = await response.json();
-                renderTasks(tasks);
+                token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = './login.html';
+                }
+                const response = await fetch('http://localhost:3000/api/decodeToken', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ token: token })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    username = data.username;
+                    await fetchTasks(username);
+                } else {
+                    console.error('Failed to decode token:', response.statusText);
+                    window.location.href = './login.html';
+                }
             } catch (error) {
-                console.error('Error loading tasks:', error);
+                console.error('Error in decodeToken:', error.message);
+                window.location.href = './login.html';
+            }
+        }
+
+        async function fetchTasks(username) {
+            try {
+                const response = await fetch('http://localhost:3000/api/tasks/view', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ username: username })
+                });
+                if (response.ok) {
+                    const tasks = await response.json();
+                    populateTasks(tasks);
+                } else {
+                    console.error('Failed to fetch tasks:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching tasks:', error.message);
+            }
+        }
+
+        function populateTasks(tasks) {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+            if (tasks.length === 0) {
+                taskList.innerHTML = '<p>No tasks found.</p>';
+            } else {
+                tasks.forEach(task => {
+                    const taskItem = document.createElement('div');
+                    taskItem.className = 'card mb-4'; // Margin-bottom for spacing between tasks
+
+                    // Convert due_date to YYYY-MM-DD format if it's not already in that format
+                    const dueDate = task.due_date ? new Date(task.due_date).toLocaleDateString('en-CA') : '';
+
+                    taskItem.innerHTML = `
+                        <form class="task-form" data-task-id="${task.task_id}">
+                            <div class="form-group">
+                                <label for="description-${task.task_id}">Task Description</label>
+                                <textarea class="form-control" id="description-${task.task_id}" rows="3" required>${task.description}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="status-${task.task_id}">Status</label>
+                                <select class="form-control" id="status-${task.task_id}" required>
+                                    <option value="pending" ${task.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="in_progress" ${task.status === 'in_progress' ? 'selected' : ''}>In Progress</option>
+                                    <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>Completed</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="priority-${task.task_id}">Priority</label>
+                                <select class="form-control" id="priority-${task.task_id}">
+                                    <option value="high" ${task.priority === 'high' ? 'selected' : ''}>High</option>
+                                    <option value="medium" ${task.priority === 'medium' ? 'selected' : ''}>Medium</option>
+                                    <option value="low" ${task.priority === 'low' ? 'selected' : ''}>Low</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="category-${task.task_id}">Category</label>
+                                <input type="text" class="form-control" id="category-${task.task_id}" value="${task.category}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="due_date-${task.task_id}">Due Date</label>
+                                <input type="date" class="form-control" id="due_date-${task.task_id}" value="${dueDate}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="due_time-${task.task_id}">Due Time</label>
+                                <input type="time" class="form-control" id="due_time-${task.task_id}" value="${task.due_time}" required>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="saveTask(${task.task_id})">Save</button>
+                            <button type="button" class="btn btn-danger" onclick="deleteTask(${task.task_id})">Delete</button>
+                        </form>
+                    `;
+                    taskList.appendChild(taskItem);
+                });
+            }
+        }
+
+        async function saveTask(taskId) {
+            try {
+                const taskForm = document.querySelector(`.task-form[data-task-id="${taskId}"]`);
+                const description = taskForm.querySelector(`#description-${taskId}`).value;
+                const status = taskForm.querySelector(`#status-${taskId}`).value;
+                const priority = taskForm.querySelector(`#priority-${taskId}`).value;
+                const category = taskForm.querySelector(`#category-${taskId}`).value;
+                const due_date = taskForm.querySelector(`#due_date-${taskId}`).value;
+                const due_time = taskForm.querySelector(`#due_time-${taskId}`).value;
+
+                const response = await fetch('http://localhost:3000/api/tasks/update', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ taskId, username, description, status, priority, category, due_date, due_time })
+                });
+                if (response.ok) {
+                    alert('Task updated successfully.');
+                    await fetchTasks(username);
+                } else {
+                    const errorData = await response.json();
+                    console.error('Failed to update task:', errorData.message);
+                }
+            } catch (error) {
+                console.error('Error saving task:', error.message);
             }
         }
 
         async function deleteTask(taskId) {
             try {
-                const response = await fetch(`http://localhost:3000/api/delete-task/${taskId}`, {
-                    method: 'DELETE'
+                const response = await fetch('http://localhost:3000/api/tasks/deleteTask', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ taskId, username })
                 });
-
                 if (response.ok) {
-                    console.log('Task deleted successfully');
-                    loadTasks(); // Reload tasks after deletion
+                    alert('Task deleted successfully.');
+                    await fetchTasks(username);
                 } else {
-                    console.error('Failed to delete task');
+                    const errorData = await response.json();
+                    console.error('Failed to delete task:', errorData.message);
                 }
             } catch (error) {
-                console.error('Error deleting task:', error);
+                console.error('Error deleting task:', error.message);
             }
         }
 
-        async function filterTasks() {
-            const categoryFilter = document.getElementById('categoryFilter').value;
-            const priorityFilter = document.getElementById('priorityFilter').value;
-
-            try {
-                let apiUrl = `http://localhost:3000/api/tasks?username=${username}`;
-
-                if (categoryFilter !== 'all') {
-                    apiUrl += `&category=${categoryFilter}`;
-                }
-
-                if (priorityFilter !== 'all') {
-                    apiUrl += `&priority=${priorityFilter}`;
-                }
-
-                const response = await fetch(apiUrl);
-                const filteredTasks = await response.json();
-                renderTasks(filteredTasks);
-            } catch (error) {
-                console.error('Error filtering tasks:', error);
-            }
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = './login.html';
         }
 
-        function renderTasks(tasks) {
-            const taskListElement = document.getElementById('task-list');
-            taskListElement.innerHTML = ''; // Clear previous tasks
-
-            tasks.forEach(task => {
-                const taskItem = document.createElement('div');
-                taskItem.classList.add('task-item');
-
-                const titleElement = document.createElement('h3');
-                titleElement.textContent = task.title;
-                taskItem.appendChild(titleElement);
-
-                const descriptionElement = document.createElement('p');
-                descriptionElement.textContent = task.description;
-                taskItem.appendChild(descriptionElement);
-
-                const dueDateElement = document.createElement('p');
-                dueDateElement.textContent = 'Due Date: ' + task.due_date;
-                taskItem.appendChild(dueDateElement);
-
-                const categoryElement = document.createElement('p');
-                categoryElement.textContent = 'Category: ' + task.category;
-                taskItem.appendChild(categoryElement);
-
-                const priorityElement = document.createElement('p');
-                priorityElement.textContent = 'Priority: ' + task.priority;
-                taskItem.appendChild(priorityElement);
-
-                const recurrenceElement = document.createElement('p');
-                recurrenceElement.textContent = 'Recurrence: ' + task.recurrence;
-                taskItem.appendChild(recurrenceElement);
-
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.onclick = () => deleteTask(task.task_id);
-                taskItem.appendChild(deleteButton);
-
-                taskListElement.appendChild(taskItem);
-            });
-        }
-
-        // Initial load of tasks when the page loads
-        loadTasks();
+        window.onload = () => {
+            decodeToken();
+            setActiveNav(); // Ensure the correct nav item is highlighted
+        };
     </script>
 </body>
 </html>

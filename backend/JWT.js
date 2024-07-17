@@ -6,7 +6,7 @@ const createTokens = (user) => {
     const accessToken = sign(
         { username: user.username, id: user.id },
         secretKey,
-        { expiresIn: '30d' }
+        { expiresIn: '60m' }
     );
     return accessToken;
 };
