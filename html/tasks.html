@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Task</title>
+    <title>Tasks</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Roboto', Arial, sans-serif;
             margin: 0;
-            padding-top: 30px; /* Reduced padding for space above */
+            padding-top: 50px;
             background: url('https://www.transparenttextures.com/patterns/asfalt-light.png'), linear-gradient(to bottom right, #4154f1, #c8c8c8);
             background-attachment: fixed;
             background-size: cover;
@@ -18,36 +18,31 @@
             line-height: 1.6;
         }
         .container {
-            max-width: 600px;
-            margin-top: 50px; /* Adjusted margin for better alignment */
-            margin-bottom: 50px; /* Added margin for bottom spacing */
+            max-width: 800px;
+            margin-top: 50px;
+            margin-bottom: 50px;
         }
         .card {
             background-color: rgba(255, 255, 255, 0.9);
             color: #4154f1;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
             padding: 20px;
             text-align: center;
+            margin-bottom: 20px; /* Spacing between cards */
         }
-        .card h2, .card h3 {
+        .card h2 {
             font-size: 1.8rem;
             margin-bottom: 20px;
         }
-        .card p {
-            font-size: 1rem;
-            margin: 5px 0;
+        .card form {
+            text-align: left;
         }
-        .form-group label {
-            font-weight: bold;
+        .card .form-group {
+            margin-bottom: 15px; /* Space between form elements */
         }
-        .btn-primary {
-            background-color: #4154f1;
-            border: none;
-        }
-        .btn-primary:hover {
-            background-color: #3341c1;
+        .card .btn {
+            margin-top: 10px; /* Space above buttons */
         }
         .header {
             background-color: #ffffff;
@@ -102,13 +97,16 @@
             text-decoration: none;
             padding: 10px 15px;
             display: block;
-            transition: 0.3s;
+            transition: background-color 0.3s, color 0.3s;
             font-weight: bold;
         }
-        .navmenu ul li a:hover,
+        .navmenu ul li a:hover {
+            color: #4154f1;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
         .navmenu ul li a.active {
             color: #4154f1;
-            text-decoration: none;
             background-color: #f1f1f1;
             border-radius: 5px;
         }
@@ -125,83 +123,88 @@
             background-color: #3341c1;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
 </head>
 <body>
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl d-flex align-items-center">
             <div class="logo d-flex align-items-center me-auto">
-                <img src="../home/assets/img/logo.png" alt="">
+                <img src="./home/assets/img/logo.png" alt="">
                 <h1 class="sitename">AgendaAce</h1>
             </div>
             <nav id="navmenu" class="navmenu ml-auto">
                 <ul>
-                    <li><a href="../home/index.html">Home</a></li>
-                    <li><a href="../home/index.html#about">About</a></li>
-                    <li><a href="../html/updateprofile.html">Profile</a></li>
-                    <li><a href="../html/tasks.html" class="active">Create tasks</a></li>
-                    <li><a href="../html/viewtasks.html">Tasks</a></li>
+                    <li><a href="./home/home.html">Home</a></li>
+                    <li><a href="./updateprofile.html">Profile</a></li>
+                    <li><a href="./createproject.html">Create Project</a></li>
+                    <li><a href="./create-task.html" class="active">Create Task</a></li>
+                    <li><a href="./viewtasks.html">Tasks</a></li>
+                    <li><a href="./notification.html"><i class="fas fa-bell"></i></a></li>
                 </ul>
             </nav>
             <button class="btn-getstarted" onclick="logout()">Logout</button>
         </div>
     </header>
-
     <div class="container">
         <div class="card">
             <h2>Create Task</h2>
-            <form id="taskForm">
+            <form id="create-task-form">
                 <div class="form-group">
-                    <label for="description">Task Description</label>
-                    <textarea class="form-control" id="description" rows="3" required></textarea>
+                    <label for="project">Project</label>
+                    <select id="project" name="project" class="form-control" required>
+                        <!-- Options will be dynamically filled -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task_name">Task Name</label>
+                    <input type="text" id="task_name" name="task_name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="assigned_to">Assign To</label>
+                    <select id="assigned_to" name="assigned_to" class="form-control" required>
+                        <!-- Options will be dynamically filled -->
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="status">Status</label>
-                    <select class="form-control" id="status" required>
-                        <option value="pending">Pending</option>
-                        <option value="in_progress">In Progress</option>
+                    <select id="status" name="status" class="form-control" required>
+                        <option value="pending">pending</option>
+                        <option value="inprogress">In Progress</option>
                         <option value="completed">Completed</option>
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="due_date">Due Date</label>
+                    <input type="date" id="due_date" name="due_date" class="form-control" min="">
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" name="category" class="form-control">
+                </div>
+                <div class="form-group">
                     <label for="priority">Priority</label>
-                    <select class="form-control" id="priority">
+                    <select id="priority" name="priority" class="form-control">
                         <option value="high">High</option>
                         <option value="medium">Medium</option>
                         <option value="low">Low</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="category">Category</label>
-                    <input type="text" class="form-control" id="category" required>
-                </div>
-                <div class="form-group">
-                    <label for="due_date">Due Date</label>
-                    <input type="date" class="form-control" id="due_date" required>
-                </div>
-                <div class="form-group">
-                    <label for="due_time">Due Time</label>
-                    <input type="time" class="form-control" id="due_time" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Create Task</button>
+                <button type="submit" class="btn btn-primary">Create Task</button>
             </form>
         </div>
     </div>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         let token;
-        let username;
 
         async function decodeToken() {
             try {
                 token = localStorage.getItem('token');
                 if (!token) {
-                    window.location.href = './login.html';
+                    window.location.href = './index.html';
+                    return;
                 }
-                const response = await fetch('http://localhost:3000/api/decodeToken', {
+                const response = await fetch('https://task-management-backend-6ezu.onrender.com/api/decodeToken', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -211,57 +214,103 @@
                 });
                 if (response.ok) {
                     const data = await response.json();
-                    username = data.username;
+                    loadProjectsAndUsers(data.username);
                 } else {
-                    console.error('Failed to decode token:', response.statusText);
-                    window.location.href = './login.html';
+                    window.location.href = './index.html';
                 }
             } catch (error) {
-                console.error('Error in decodeToken:', error.message);
-                window.location.href = './login.html';
+                console.error('Error decoding token:', error);
+                window.location.href = './index.html';
             }
         }
 
-        document.getElementById('taskForm').addEventListener('submit', async function(event) {
+        async function loadProjectsAndUsers(username) {
+            try {
+                const [projectsResponse, usersResponse] = await Promise.all([
+                    fetch(`https://task-management-backend-6ezu.onrender.com/api/userProjects`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch(`https://task-management-backend-6ezu.onrender.com/api/users`, { headers: { 'Authorization': `Bearer ${token}` } })
+                ]);
+
+                if (projectsResponse.ok && usersResponse.ok) {
+                    const projects = await projectsResponse.json();
+                    const users = await usersResponse.json();
+                    populateProjects(projects);
+                    populateUsers(users);
+                } else {
+                    console.error('Failed to load projects or users');
+                }
+            } catch (error) {
+                console.error('Error loading projects or users:', error);
+            }
+        }
+
+        function populateProjects(projects) {
+            const projectSelect = document.getElementById('project');
+            projects.forEach(project => {
+                const option = document.createElement('option');
+                option.value = project.project_id;
+                option.textContent = project.project_name;
+                projectSelect.appendChild(option);
+            });
+        }
+
+        function populateUsers(users) {
+            const assignedToSelect = document.getElementById('assigned_to');
+            users.forEach(user => {
+                const option = document.createElement('option');
+                option.value = user.username;
+                option.textContent = user.full_name;
+                assignedToSelect.appendChild(option);
+            });
+        }
+
+        async function handleFormSubmit(event) {
             event.preventDefault();
 
-            const description = document.getElementById('description').value;
-            const status = document.getElementById('status').value;
-            const priority = document.getElementById('priority').value;
-            const category = document.getElementById('category').value;
-            const due_date = document.getElementById('due_date').value;
-            const due_time = document.getElementById('due_time').value;
+            const formData = new FormData(event.target);
+            const data = {
+                project_id: formData.get('project'),
+                task_name: formData.get('task_name'),
+                assigned_to: formData.get('assigned_to'),
+                status: formData.get('status'),
+                due_date: formData.get('due_date'),
+                category: formData.get('category'),
+                priority: formData.get('priority')
+            };
 
             try {
-                const response = await fetch('http://localhost:3000/api/tasks', {
+                const response = await fetch('https://task-management-backend-6ezu.onrender.com/api/createTask', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ username, description, status, priority, category, due_date, due_time })
+                    body: JSON.stringify(data)
                 });
 
-                const result = await response.json();
                 if (response.ok) {
+                    const result = await response.json();
                     alert('Task created successfully!');
-                    window.location.href = './tasks.html'; // Redirect to tasks page
+                    event.target.reset();
                 } else {
-                    alert('Task creation failed: ' + result.message);
+                    const error = await response.json();
+                    alert(`Error: ${error.message}`);
                 }
             } catch (error) {
-                console.error('Error:', error);
-                alert('Task creation failed');
+                console.error('Error creating task:', error);
+                alert('Failed to create task. Please try again later.');
             }
-        });
-
-        function logout() {
-            localStorage.removeItem('token');
-            window.location.href = './login.html';
         }
 
-        window.onload = function() {
+        document.getElementById('create-task-form').addEventListener('submit', handleFormSubmit);
+
+        window.onload = () => {
             decodeToken();
+            document.getElementById('due_date').min = new Date().toISOString().split("T")[0];
+        };
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = './index.html';
         }
     </script>
 </body>

@@ -5,7 +5,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch('http://localhost:3000/api/login', {
+        const response = await fetch('https://task-management-backend-6ezu.onrender.com/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -13,18 +13,15 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             body: JSON.stringify({ username, password }),
         });
 
-        const result = await response.json();
-        console.log(result)
-        if (response.ok) {
-            localStorage.setItem('token', result.token);
-            //window.location.href='../home/index.html';
-            if (result.profileExists==1){
-                window.location.href='../home/index.html';
-            }
-            else{
-                window.location.href='./completeProfile.html'
-            }
+        if (!response.ok) {
+            throw new Error('Login failed');
         }
+
+        const result = await response.json();
+
+        localStorage.setItem('token', result.token);
+
+        window.location.href = './home/home.html';
     } catch (error) {
         console.error('Error:', error);
         alert('Login failed');

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EventEase - Sign Up</title>
-    <link rel="stylesheet" href="../css/register.css">
+    <link rel="stylesheet" href="./css/register.css">
 </head>
 <body>
     <div class="form-container">
@@ -19,9 +19,21 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" placeholder="Enter your password" required>
             
+            <label for="full_name">Full Name:</label>
+            <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" required>
+            
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required>
+            
             <button type="submit">Sign Up</button>
         </form>
     </div>
-    <script src="../java script/register.js"></script>
+    <script src="./java script/register.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('dob').setAttribute('max', today);
+        });
+    </script>
 </body>
 </html>
