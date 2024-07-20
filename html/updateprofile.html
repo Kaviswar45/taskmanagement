@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,17 +11,19 @@
         body {
             font-family: 'Roboto', Arial, sans-serif;
             margin: 0;
-            padding-top: 70px; /* Ensure content doesn't hide under fixed header */
+            padding-top: 70px;
             background: url('https://www.transparenttextures.com/patterns/asfalt-light.png'), linear-gradient(to bottom right, #4154f1, #c8c8c8);
             background-attachment: fixed;
             background-size: cover;
             color: #4154f1;
             line-height: 1.6;
         }
+
         .container {
             max-width: 700px;
             margin-top: 30px;
         }
+
         .card {
             background-color: rgba(255, 255, 255, 0.9);
             color: #4154f1;
@@ -30,19 +33,24 @@
             padding: 20px;
             text-align: center;
         }
-        .card h2, .card h3 {
+
+        .card h2,
+        .card h3 {
             font-size: 1.8rem;
             margin-bottom: 20px;
         }
+
         .card p {
             font-size: 1rem;
             margin: 5px 0;
         }
+
         .task-status {
             display: flex;
             justify-content: space-around;
             margin-top: 20px;
         }
+
         .task-status div {
             background-color: #f1f1f1;
             color: #4154f1;
@@ -52,10 +60,12 @@
             margin: 0 10px;
             text-align: center;
         }
+
         .task-status div p {
             margin: 0;
             font-weight: bold;
         }
+
         .header {
             background-color: #ffffff;
             padding: 10px 0;
@@ -65,21 +75,25 @@
             z-index: 997;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .header .container-fluid {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .logo {
             display: flex;
             align-items: center;
             text-decoration: none;
             margin-right: auto;
         }
+
         .logo img {
             max-height: 50px;
             margin-right: 10px;
         }
+
         .sitename {
             margin: 0;
             font-size: 1.5rem;
@@ -87,23 +101,28 @@
             text-decoration: none;
             font-weight: bold;
         }
+
         .sitename:hover {
             text-decoration: none;
         }
+
         .navmenu {
             display: flex;
             align-items: center;
             margin-left: auto;
         }
+
         .navmenu ul {
             list-style: none;
             padding: 0;
             margin: 0;
             display: flex;
         }
+
         .navmenu ul li {
             margin: 0 10px;
         }
+
         .navmenu ul li a {
             color: #012970;
             text-decoration: none;
@@ -112,6 +131,7 @@
             transition: 0.3s;
             font-weight: bold;
         }
+
         .navmenu ul li a:hover,
         .navmenu ul li a.active {
             color: #4154f1;
@@ -119,6 +139,7 @@
             background-color: #f1f1f1;
             border-radius: 5px;
         }
+
         .btn-getstarted {
             background-color: #4154f1;
             color: #fff;
@@ -129,18 +150,22 @@
             box-shadow: 2px 2px 5px black;
             font-weight: bold;
         }
+
         .btn-getstarted:hover {
             background-color: #012970;
             box-shadow: 4px 4px 10px black;
         }
+
         .profile-card {
             background: linear-gradient(145deg, #f0f0f3, #c8c8c8);
         }
+
         .tasks-card {
             background: linear-gradient(145deg, #c8c8c8, #f0f0f3);
         }
     </style>
 </head>
+
 <body>
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl d-flex align-items-center">
@@ -166,6 +191,7 @@
             <h2 id="name"></h2>
             <p id="bio"></p>
             <p id="dob"></p>
+            <button class="btn-getstarted" onclick="openEditModal()">Edit Profile</button>
         </div>
         <div class="card tasks-card">
             <h3>Tasks Overview</h3>
@@ -183,6 +209,43 @@
                     <p id="completed-count">0</p>
                 </div>
             </div>
+            
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProfileForm">
+                        <div class="form-group">
+                            <label for="editFirstName">First Name</label>
+                            <input type="text" class="form-control" id="editFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editLastName">Last Name</label>
+                            <input type="text" class="form-control" id="editLastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editBio">Bio</label>
+                            <textarea class="form-control" id="editBio" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="editDob">Date of Birth</label>
+                            <input type="date" class="form-control" id="editDob" required>
+                        </div>
+                        <button type="submit" class="btn-getstarted">Save Changes</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -190,72 +253,143 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        let token;
-        let username;
+<script>
+  let token;
+let username;
 
-        async function decodeToken() {
+async function decodeToken() {
+    try {
+        token = localStorage.getItem('token');
+        console.log(token);
+
+        if (!token) {
+            window.location.href = '../html/login.html'
+            return;
+        }
+
+        const response = await fetch('http://localhost:3000/api/decodeToken', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ token: token })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            username = data.username;
+        } else {
+            console.error('Failed to decode token:', response.statusText);
+            if (response.status === 401) { // 401 Unauthorized
+                window.location.href = '../html/login.html';
+            }
+        }
+    } catch (error) {
+        console.error('Error in decodeToken:', error.message);
+        window.location.href = '../html/login.html';
+    }
+}
+        async function fetchUserData(username) {
             try {
-                token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = './login.html';
-                }
-                const response = await fetch('http://localhost:3000/api/decodeToken', {
+                const response = await fetch('http://localhost:3000/api/users/profile', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': token
                     },
-                    body: JSON.stringify({ token: token })
+                    body: JSON.stringify({ username })
                 });
-                if (response.ok) {
-                    const data = await response.json();
-                    username = data.username;
-                    fetchUserProfile();
-                } else {
-                    console.error('Failed to decode token:', response.statusText);
-                    window.location.href = './login.html';
+
+                if (!response.ok) {
+                    throw new Error('Error fetching user data');
                 }
+
+                const data = await response.json();
+
+                document.getElementById('name').textContent = `${data.firstName} ${data.lastName}`;
+                document.getElementById('bio').textContent = `Bio: ${data.bio}`;
+                document.getElementById('dob').textContent = `Date of Birth: ${data.dob}`;
+
             } catch (error) {
-                console.error('Error in decodeToken:', error.message);
-                window.location.href = './login.html';
+                console.error('Error fetching user data:', error);
             }
         }
 
-        async function fetchUserProfile() {
+        async function fetchTaskCounts(username) {
             try {
-                const response = await fetch('http://localhost:3000/api/userProfile', {
+                const response = await fetch('http://localhost:3000/api/users/taskCounts', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': token
                     },
-                    body: JSON.stringify({ username: username })
+                    body: JSON.stringify({ username })
                 });
-                if (response.ok) {
-                    const data = await response.json();
-                    document.getElementById('name').textContent = `${data.first_name} ${data.last_name}`;
-                    document.getElementById('bio').textContent = data.bio;
-                    document.getElementById('dob').textContent = `Date of Birth: ${new Date(data.dob).toLocaleDateString()}`;
-                    document.getElementById('pending-count').textContent = data.tasks.pending;
-                    document.getElementById('in-progress-count').textContent = data.tasks.in_progress;
-                    document.getElementById('completed-count').textContent = data.tasks.completed;
-                } else {
-                    console.error('Failed to fetch user profile:', response.statusText);
+
+                if (!response.ok) {
+                    throw new Error('Error fetching task counts');
                 }
+
+                const data = await response.json();
+
+                document.getElementById('pending-count').textContent = data.pendingCount;
+                document.getElementById('in-progress-count').textContent = data.inProgressCount;
+                document.getElementById('completed-count').textContent = data.completedCount;
             } catch (error) {
-                console.error('Error fetching user profile:', error.message);
+                console.error('Error fetching task counts:', error);
             }
         }
 
-        window.onload = function() {
-            decodeToken();
+        async function updateProfile(event) {
+            event.preventDefault();
+
+            const firstName = document.getElementById('editFirstName').value;
+            const lastName = document.getElementById('editLastName').value;
+            const bio = document.getElementById('editBio').value;
+            const dob = document.getElementById('editDob').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/users/updateProfile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token
+                    },
+                    body: JSON.stringify({ username, firstName, lastName, bio, dob })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error updating profile');
+                }
+
+                $('#editProfileModal').modal('hide');
+                fetchUserData(username);
+            } catch (error) {
+                console.error('Error updating profile:', error);
+            }
         }
 
         function logout() {
             localStorage.removeItem('token');
             window.location.href = './login.html';
         }
-    </script>
+
+        function openEditModal() {
+            $('#editProfileModal').modal('show');
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            username = await decodeToken();
+            if (username) {
+                fetchUserData(username);
+                fetchTaskCounts(username);
+            }
+        });
+
+        document.getElementById('editProfileForm').addEventListener('submit', updateProfile);
+</script>
 </body>
+
 </html>
